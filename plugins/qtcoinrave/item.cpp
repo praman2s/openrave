@@ -593,7 +593,12 @@ void RobotItem::CreateAxis(RobotItem::EE& ee, const string& name, const Vector* 
 
     Vector colors[] = { Vector(0,0,1),Vector(0,1,0),Vector(1,0,0)};
     Vector rotations[] = { Vector(1,0,0,PI/2), Vector(1,0,0,0), Vector(0,0,1,-PI/2)};
-
+    dReal envunitmult = 1.0;
+    if(!!_probot){
+        std::pair<std::string, dReal> envunit;
+        envunit = _probot->GetEnv()->GetUnit();
+        envunitmult = envunit.second;
+    }
     // add 3 cylinder+cone axes
     for(int i = 0; i < 3; ++i) {
         // set a diffuse color
@@ -608,18 +613,18 @@ void RobotItem::CreateAxis(RobotItem::EE& ee, const string& name, const Vector* 
         protation->rotation.setValue(SbVec3f(rotations[i].x, rotations[i].y, rotations[i].z), rotations[i].w);
 
         SoTransform* pcyltrans = new SoTransform();
-        pcyltrans->translation.setValue(0,0.02f,0);
+        pcyltrans->translation.setValue(0,0.02f*envunitmult,0);
 
         SoCylinder* c = new SoCylinder();
-        c->radius = 0.002f;
-        c->height = 0.04f;
+        c->radius = 0.002f*envunitmult;
+        c->height = 0.04f*envunitmult;
 
         SoCone* cn = new SoCone();
-        cn->bottomRadius = 0.004f;
-        cn->height = 0.02f;
+        cn->bottomRadius = 0.004f*envunitmult;
+        cn->height = 0.02f*envunitmult;
 
         SoTransform* pconetrans = new SoTransform();
-        pconetrans->translation.setValue(0,0.02f,0);
+        pconetrans->translation.setValue(0,0.02f*envunitmult,0);
 
         psep->addChild(mtrl);
         psep->addChild(protation);
@@ -643,18 +648,18 @@ void RobotItem::CreateAxis(RobotItem::EE& ee, const string& name, const Vector* 
         protation->rotation.setValue(SbVec3f(axisangle.x/angle,axisangle.y/angle,axisangle.z/angle),angle);
 
         SoTransform* pcyltrans = new SoTransform();
-        pcyltrans->translation.setValue(0,0.03f,0);
+        pcyltrans->translation.setValue(0,0.03f*envunitmult,0);
 
         SoCylinder* c = new SoCylinder();
-        c->radius = 0.001f;
-        c->height = 0.06f;
+        c->radius = 0.001f*envunitmult;
+        c->height = 0.06f*envunitmult;
 
         SoCone* cn = new SoCone();
-        cn->bottomRadius = 0.002f;
-        cn->height = 0.01f;
+        cn->bottomRadius = 0.002f*envunitmult;
+        cn->height = 0.01f*envunitmult;
 
         SoTransform* pconetrans = new SoTransform();
-        pconetrans->translation.setValue(0,0.03f,0);
+        pconetrans->translation.setValue(0,0.03f*envunitmult,0);
 
         psep->addChild(mtrl);
         psep->addChild(protation);
@@ -675,7 +680,7 @@ void RobotItem::CreateAxis(RobotItem::EE& ee, const string& name, const Vector* 
         //Transform t = GetRaveTransform(_selectedItem->GetIvTransform());
 
         SoTranslation* ptrans = new SoTranslation();
-        ptrans->translation.setValue(SbVec3f(0.02f,0.02f,0.02f));
+        ptrans->translation.setValue(SbVec3f(0.02f*envunitmult,0.02f*envunitmult,0.02f*envunitmult));
         ptextsep->addChild(ptrans);
 
         SoTransparencyType* ptype = new SoTransparencyType();
